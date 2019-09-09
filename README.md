@@ -29,8 +29,10 @@ optional arguments:
 e.g.
 
 ```
-./exploder.py --worksheet1 Sheet1 --worksheet2 Sheet2 --column '1,3' test1.xlsx
+./exploder.py --worksheet1 Sheet1 --worksheet2 Sheet2 --column "1,3" test1.xlsx
 ```
+
+![screenshot.png](screenshot.png)
 
 ## development
 
