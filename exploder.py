@@ -16,14 +16,23 @@ except ModuleNotFoundError:
 
 def explode(wb, ws1, ws2, cols):
     """Explode worksheet 1."""
+    unique = {}
+
     data = []
     for row in ws1.iter_rows():
         data.append([])
         for cell in row:
             if cell.column in cols and cell.value is not None:
                 data[-1].append([item.strip() for item in cell.value.split(',')])
+                unique.setdefault(cell.column, set()).update(data[-1][-1])
             else:
                 data[-1].append([cell.value])
+
+    print(f"Worksheet {ws1.title} has {len(data)} rows.")
+    for key in sorted(unique):
+        print(f"Column {key} has the following unique items:")
+        for val in sorted(unique[key]):
+            print(f"- {val}")
 
     row = 1
     for item1 in data:
@@ -31,6 +40,8 @@ def explode(wb, ws1, ws2, cols):
             for column, value in enumerate(item2, 1):
                 ws2.cell(row=row, column=column, value=value)
             row += 1
+
+    print(f"Worksheet {ws2.title} has {row - 1} rows.")
 
 
 def main():
