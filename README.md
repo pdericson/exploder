@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/pdericson/exploder.svg?branch=master)](https://travis-ci.org/pdericson/exploder)
+
 # exploder
 
 Exploder.
@@ -22,7 +24,6 @@ optional arguments:
   --worksheet2 WORKSHEET
                         worksheet 2
   --columns COLUMNS     the columns to explode
-
 ```
 
 e.g.
