@@ -35,6 +35,7 @@ e.g.
 ## development
 
 ```
+./exploder_test.py
 rm -rf vendor
 pip3 install --target vendor openpyxl
 ```
