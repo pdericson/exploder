@@ -3,6 +3,7 @@
 """Exploder."""
 
 import argparse
+import copy
 import itertools
 import os
 import sys
@@ -17,6 +18,7 @@ except ModuleNotFoundError:
 def explode(wb, ws1, ws2, cols):
     """Explode worksheet 1."""
     unique = {}
+    style = {}
 
     data = []
     for row in ws1.iter_rows():
@@ -27,6 +29,7 @@ def explode(wb, ws1, ws2, cols):
                 unique.setdefault(cell.column, set()).update(data[-1][-1])
             else:
                 data[-1].append([cell.value])
+            style[cell.column] = copy.copy(cell._style)
 
     print(f"Worksheet {ws1.title} has {len(data)} rows.")
     for key in sorted(unique):
@@ -38,7 +41,8 @@ def explode(wb, ws1, ws2, cols):
     for item1 in data:
         for item2 in itertools.product(*item1):
             for column, value in enumerate(item2, 1):
-                ws2.cell(row=row, column=column, value=value)
+                cell = ws2.cell(row=row, column=column, value=value)
+                cell._style = copy.copy(style[column])
             row += 1
 
     print(f"Worksheet {ws2.title} has {row - 1} rows.")
