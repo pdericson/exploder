@@ -19,6 +19,9 @@ def explode(wb, ws1, ws2, cols):
     """Explode worksheet 1."""
     unique = {}
     style = {}
+    style_row = 1
+    row_dimension = None
+    row_dimension_row = 1
 
     data = []
     for row in ws1.iter_rows():
@@ -30,6 +33,9 @@ def explode(wb, ws1, ws2, cols):
             else:
                 data[-1].append([cell.value])
             style[cell.column] = copy.copy(cell._style)
+            style_row = cell.row
+            row_dimension = copy.copy(ws1.row_dimensions[cell.row])
+            row_dimension_row = cell.row
 
     print(f"Worksheet {ws1.title} has {len(data)} rows.")
     for key in sorted(unique):
@@ -42,7 +48,10 @@ def explode(wb, ws1, ws2, cols):
         for item2 in itertools.product(*item1):
             for column, value in enumerate(item2, 1):
                 cell = ws2.cell(row=row, column=column, value=value)
-                cell._style = copy.copy(style[column])
+                if row > style_row:
+                    cell._style = copy.copy(style[column])
+                if row > row_dimension_row:
+                    ws2.row_dimensions[cell.row] = copy.copy(row_dimension)
             row += 1
 
     print(f"Worksheet {ws2.title} has {row - 1} rows.")
