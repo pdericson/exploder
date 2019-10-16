@@ -48,6 +48,20 @@ class TestExploder(unittest.TestCase):
         self.assertEqual(ws2['B8'].value, 'Goodbye')
         self.assertEqual(ws2['C8'].value, 'three')
 
+    def test_test2(self):
+
+        wb = openpyxl.load_workbook(filename='test2.xlsx')
+
+        ws1 = wb['Sheet1']
+
+        try:
+            ws2 = wb['Sheet2']
+        except KeyError:
+            ws2 = wb.copy_worksheet(ws1)
+            ws2.title = 'Sheet2'
+
+        exploder.explode(wb, ws1, ws2, [1, 3])
+
 
 if __name__ == '__main__':
     unittest.main()

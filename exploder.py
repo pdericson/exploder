@@ -28,7 +28,10 @@ def explode(wb, ws1, ws2, cols):
         data.append([])
         for cell in row:
             if cell.column in cols and cell.value is not None:
-                data[-1].append([item.strip() for item in cell.value.split(',')])
+                value = cell.value
+                if isinstance(value, int):
+                    value = str(value)
+                data[-1].append([item.strip() for item in value.split(',')])
                 unique.setdefault(cell.column, set()).update(data[-1][-1])
             else:
                 data[-1].append([cell.value])
